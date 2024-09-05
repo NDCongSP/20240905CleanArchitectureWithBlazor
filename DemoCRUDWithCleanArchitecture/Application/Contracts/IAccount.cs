@@ -17,6 +17,7 @@ namespace Application.Contracts
         Task<IEnumerable<GetRoleDTO>> GetRolesAsync();
         Task<IEnumerable<GetUserWithRoleResponseDTO>> GetUsersWithRolesAsync();
         Task<GeneralResponse> ChangeUserRoleAsync(ChangeUserRoleRequestDTO model);
-        Task<GeneralResponse> ChangePass(ChangePassDTO model);
+        Task<GeneralResponse> ChangePassAsync(ChangePassDTO model);
+        Task<GeneralResponse> AssignUserRoleAsync(AssignUserRoleDTO model);
     }
 }

@@ -16,14 +16,16 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+//using static Application.Extentions.Constant;
 
 namespace Infrastructure.Repos
 {
     public class AccountRepository(RoleManager<IdentityRole> roleManager,
         UserManager<ApplicationUser> userManager, IConfiguration config,
         SignInManager<ApplicationUser> signInManager,
-        AppDbContext context) : IAccount
+        ApplicationDbContext context) : IAccount
     {
+        #region Methods
         private async Task<ApplicationUser> FindUserByEmailAsync(string email)
             => await userManager.FindByEmailAsync(email);
         private async Task<IdentityRole> FindRoleByNameAsync(string roleName)
@@ -97,6 +99,8 @@ namespace Infrastructure.Repos
             }
             catch (Exception ex) { return new GeneralResponse(false, ex.Message); }
         }
+        #endregion
+
 
         public async Task<GeneralResponse> ChangeUserRoleAsync(ChangeUserRoleRequestDTO model)
         {
@@ -139,7 +143,7 @@ namespace Infrastructure.Repos
                 if (!string.IsNullOrEmpty(error)) return new GeneralResponse(false, error);
 
                 var (flag, message) = await AssignUserToRole(user, new IdentityRole() { Name = model.Role });
-                return new GeneralResponse(true, message);
+                return new GeneralResponse(flag, message);
             }
             catch (Exception ex) { return new GeneralResponse(false, ex.Message); }
         }
@@ -262,7 +266,7 @@ namespace Infrastructure.Repos
                 return new LoginResponse();
         }
 
-        public async Task<GeneralResponse> ChangePass(ChangePassDTO model)
+        public async Task<GeneralResponse> ChangePassAsync(ChangePassDTO model)
         {
             var user = await FindUserByEmailAsync(model.email);
             if (user == null) return new GeneralResponse(false, "User not found");
@@ -271,6 +275,24 @@ namespace Infrastructure.Repos
             await userManager.AddPasswordAsync(user, model.newPass);
 
             return new GeneralResponse(true, "Passwork changed");
+        }
+
+        public async Task<GeneralResponse> AssignUserRoleAsync(AssignUserRoleDTO model)
+        {
+            try
+            {
+                if (model == null) return new GeneralResponse(false, "Model state cannot be empty");
+
+                var user = await FindUserByEmailAsync(model.userEmail);
+                if (user == null) return new GeneralResponse(false, "User not found.");
+
+                var (flag, message) = await AssignUserToRole(user, new IdentityRole() { Name = model.roleName });
+                return new GeneralResponse(flag, message);
+            }
+            catch (Exception ex)
+            {
+                return new GeneralResponse(false, ex.Message);
+            }
         }
     }
 }

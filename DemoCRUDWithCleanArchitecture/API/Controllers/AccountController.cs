@@ -45,8 +45,6 @@ namespace API.Controllers
         [HttpGet("identity/role/list")]
         public async Task<ActionResult<IEnumerable<GeneralResponse>>> GetRole()
         {
-            if (!ModelState.IsValid) return BadRequest("Model cannot be null");
-
             return Ok(await account.GetRolesAsync());
         }
 
@@ -60,17 +58,7 @@ namespace API.Controllers
         [HttpGet("identity/user-with-role")]
         public async Task<ActionResult<IEnumerable<GeneralResponse>>> GetUserWithRole()
         {
-            if (!ModelState.IsValid) return BadRequest("Model cannot be null");
-
-            return Ok(await account.GetRolesAsync());
-        }
-
-        [HttpPost("identity/change-role")]
-        public async Task<ActionResult<GeneralResponse>> GetRole(ChangeUserRoleRequestDTO model)
-        {
-            if (!ModelState.IsValid) return BadRequest("Model cannot be null");
-
-            return Ok(await account.ChangeUserRoleAsync(model));
+            return Ok(await account.GetUsersWithRolesAsync());
         }
 
         [HttpPost("identity/change-pass")]
@@ -78,7 +66,23 @@ namespace API.Controllers
         {
             if (!ModelState.IsValid) return BadRequest("Model cannot be null");
 
-            return Ok(await account.ChangePass(model));
+            return Ok(await account.ChangePassAsync(model));
+        }
+
+        [HttpPost("identity/change-role")]
+        public async Task<ActionResult<GeneralResponse>> ChangeRole(ChangeUserRoleRequestDTO model)
+        {
+            if (!ModelState.IsValid) return BadRequest("Model cannot be null");
+
+            return Ok(await account.ChangeUserRoleAsync(model));
+        }
+
+        [HttpPost("identity/assign_user_role")]
+        public async Task<ActionResult<GeneralResponse>> AssignUserRole(AssignUserRoleDTO model)
+        {
+            if (!ModelState.IsValid) return BadRequest("Model cannot be null");
+
+            return Ok(await account.AssignUserRoleAsync(model));
         }
     }
 }

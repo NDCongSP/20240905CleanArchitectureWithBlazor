@@ -14,24 +14,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.DependencyInjection
+namespace Infrastructure.IoC.DependencyInjection
 {
     public static class ServiceContainer
     {
         public static IServiceCollection AddInfrastructureService(this IServiceCollection services, IConfiguration config)
         {
-            services.AddDbContext<AppDbContext>(o => o.UseSqlServer(config.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<ApplicationDbContext>(o => o.UseSqlServer(config.GetConnectionString("DefaultConnection")));
+
             services.AddIdentityCore<ApplicationUser>()
                 .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<AppDbContext>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddSignInManager();
+
             services.AddAuthentication(option =>
             {
                 option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(option =>
             {
-                option.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                option.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
                     ValidateAudience = true,
@@ -54,7 +56,9 @@ namespace Infrastructure.DependencyInjection
                                 .AllowCredentials()
                     );
             });
-            services.AddScoped<IAccount, AccountRepository>();
+            //services.AddScoped<IAccount, AccountRepository>();
+            ServiceAddScoped.RegisterServices(services);
+
 
             return services;
         }

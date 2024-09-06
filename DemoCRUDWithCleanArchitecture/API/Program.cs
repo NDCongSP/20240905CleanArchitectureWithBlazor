@@ -22,7 +22,7 @@ using (var scope = app.Services.CreateScope())
     var context = services.GetRequiredService<ApplicationDbContext>();
 
     // Call the seeding method
-    DbInitializer.Initialize(context);
+    DbInitializer.InitializeAsync(context);
 }
 
 // Configure the HTTP request pipeline.
@@ -32,6 +32,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 app.UseCors("WebUI");
+//app.UseCors();
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

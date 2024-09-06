@@ -1,12 +1,12 @@
-﻿using Application.Contracts;
-using Application.DTOs.Request.Account;
+﻿using Application.DTOs.Request.Account;
 using Application.DTOs.Response;
+using Application.Services.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route($"api/[controller]")]
     [ApiController]
     public class AccountController(IAccount account) : ControllerBase
     {

@@ -1,12 +1,7 @@
-﻿using Application.Contracts;
+﻿using Application.Services;
+using Application.Services.Contracts;
 using Infrastructure.Repos;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Infrastructure.IoC.DependencyInjection
 {
     public static class ServiceAddScoped
@@ -14,6 +9,9 @@ namespace Infrastructure.IoC.DependencyInjection
         public static void RegisterServices(IServiceCollection services)
         {
             services.AddScoped<IAccount, AccountRepository>();
+            services.AddScoped<IProduct, ProductRepository>();
+
+            services.AddScoped<Repository>();
         }
     }
 }

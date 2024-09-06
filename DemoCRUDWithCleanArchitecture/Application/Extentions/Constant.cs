@@ -2,6 +2,10 @@
 {
     public static class Constant
     {
+        public const string BrowserStorageKey = "x-key";
+        public const string HttpClientName = "WebUIClient";
+        public const string HttpClientHeaderScheme = "Bearer";
+
         public static class  Role
         {
             public const string Admin = "Admin";

@@ -5,7 +5,7 @@ using Application.DTOs.Request.Account;
 using Application.DTOs.Response.Account;
 using Application.DTOs.Response;
 
-namespace Application.Contracts
+namespace Application.Services.Contracts
 {
     public interface IAccount
     {

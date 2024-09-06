@@ -1,4 +1,4 @@
-﻿using Application.Contracts;
+﻿using Application.Services.Contracts;
 using Domain.Entity.Authentication;
 using Infrastructure.Data;
 using Infrastructure.Repos;
@@ -46,16 +46,27 @@ namespace Infrastructure.IoC.DependencyInjection
             });
             services.AddAuthentication();
             services.AddAuthorization();
+
+            //services.AddCors(option =>
+            //    option.AddDefaultPolicy(
+            //        builder => builder//.WithOrigins("http://*:5001/")
+            //            .AllowAnyHeader()
+            //            .AllowAnyMethod()
+            //            .AllowAnyOrigin()
+            //            .WithExposedHeaders("Content-Disposition")));
+
             services.AddCors(option =>
             {
                 option.AddPolicy("WebUI",
                     builder => builder
-                                .WithOrigins("https://localhost:7083")
+                                //.WithOrigins("https://localhost:7083")
+                                .AllowAnyOrigin()
                                 .AllowAnyMethod()
                                 .AllowAnyHeader()
-                                .AllowCredentials()
+                                .WithExposedHeaders("Content-Disposition")
                     );
             });
+
             //services.AddScoped<IAccount, AccountRepository>();
             ServiceAddScoped.RegisterServices(services);
 

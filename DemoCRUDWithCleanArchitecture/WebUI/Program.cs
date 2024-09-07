@@ -28,11 +28,12 @@ builder.Services.AddAuthorizationCore(b =>
 
 });
 
-
+//Register client and services use RestEase library
 // Register the RestEase client
 builder.Services.AddHttpClient("API")
     .ConfigureHttpClient(x => x.BaseAddress = new Uri("https://localhost:7031"))
     .UseWithRestEaseClient<IProduct>();
+    //.UseWithRestEaseClient<IProduct>();
 
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });

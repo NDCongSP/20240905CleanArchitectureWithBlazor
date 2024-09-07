@@ -28,6 +28,8 @@ namespace Infrastructure.Repos
         #region Methods
         private async Task<ApplicationUser> FindUserByEmailAsync(string email)
             => await userManager.FindByEmailAsync(email);
+        private async Task<ApplicationUser> FindUserByNameAsync(string name)
+            => await userManager.FindByNameAsync(name);
         private async Task<IdentityRole> FindRoleByNameAsync(string roleName)
             => await roleManager.FindByNameAsync(roleName);
 
@@ -56,7 +58,7 @@ namespace Infrastructure.Repos
             return null;
         }
 
-        private async Task<string> GenerateToken(ApplicationUser user)
+        private async Task<string> GenerateToken1(ApplicationUser user)
         {
             try
             {
@@ -74,7 +76,7 @@ namespace Infrastructure.Repos
                     issuer: config["Jwt:Issuer"],
                     audience: config["Jwt:Audience"],
                     claims: userClaims,
-                    expires: DateTime.Now.AddMinutes(30),
+                    expires: DateTime.Now.AddMinutes(double.TryParse(config["JwtExpiryTime"], out double value) ? value : 30),
                     signingCredentials: credentials
                     );
                 return new JwtSecurityTokenHandler().WriteToken(token);
@@ -83,6 +85,30 @@ namespace Infrastructure.Repos
             {
                 return null;
             }
+        }
+        private async Task<JwtSecurityToken> GenerateToken(ApplicationUser user)
+        {
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]!));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+            var expiry = DateTime.Now.AddMinutes(double.TryParse(config["JwtExpiryTime"], out double value) ? value : 60);
+
+            var userClaims = new[]
+               {
+                    new Claim(ClaimTypes.Name,user.Email),
+                    new Claim(ClaimTypes.Email,user.Email),
+                    new Claim(ClaimTypes.Role,(await userManager.GetRolesAsync(user)).FirstOrDefault().ToString()),
+                    new Claim("FullName",user.Name)
+                };
+
+            var token = new JwtSecurityToken(
+                issuer: config["JWT:ValidIssuer"],
+                audience: config["JWT:ValidAudience"],
+                expires: expiry,
+                claims: userClaims,
+                signingCredentials: credentials
+                );
+
+            return token;
         }
 
         private async Task<GeneralResponse> SaveRefreshTokenAsync(string userId, string token)
@@ -127,14 +153,14 @@ namespace Infrastructure.Repos
         {
             try
             {
-                if (await userManager.FindByEmailAsync(model.EmailAddress) != null)
+                if (await userManager.FindByNameAsync(model.Username) != null)
                     return new GeneralResponse(false, "Sorry, user is already created.");
 
                 var user = new ApplicationUser()
                 {
                     Name = model.Name,
                     UserName = model.Name,
-                    Email = model.EmailAddress,
+                    Email = model.Email,
                     PasswordHash = model.Password
                 };
 
@@ -157,7 +183,7 @@ namespace Infrastructure.Repos
                 {
                     Name = "Admin",
                     Password = "Admin123@456",
-                    EmailAddress = "admin@gmail.com",
+                    Email = "admin@gmail.com",
                     Role = Constant.Role.Admin
                 };
 
@@ -217,7 +243,10 @@ namespace Infrastructure.Repos
         {
             try
             {
-                var user = await FindUserByEmailAsync(model.EmailAddress);
+                //var result = await signInManager.PasswordSignInAsync(model.Username, model.Password, false, false);
+                //if(!result.Succeeded) return new LoginResponse() { flag = false ,message="Username and password are invalid."};
+
+                var user = await FindUserByNameAsync(model.Username);
                 if (user == null) return new LoginResponse(false, "User not found");
 
                 SignInResult result = null;
@@ -232,16 +261,20 @@ namespace Infrastructure.Repos
 
                 if (!result.Succeeded) return new LoginResponse(false, "Invalid credentials");
 
-                string jwtToken = await GenerateToken(user);
+                var jwtToken = await GenerateToken(user);
+                string token=new JwtSecurityTokenHandler().WriteToken(jwtToken);
                 string refreshToken = GenerateRefreshToken();
-                if (string.IsNullOrEmpty(jwtToken) || string.IsNullOrEmpty(refreshToken))
+
+                if (string.IsNullOrEmpty(token) || string.IsNullOrEmpty(refreshToken))
                     return new LoginResponse(false, "Error occured while in account, please contact administrator.");
                 else
                 {
                     //save token after login successfull 
                     var saveResult = await SaveRefreshTokenAsync(user.Id, refreshToken);
                     if (saveResult.flag)
-                        return new LoginResponse(true, $"{user.Name} successfully logged in.", jwtToken, refreshToken);
+                        return new LoginResponse(true
+                            , $"{user.Name} successfully logged in."
+                            , token, refreshToken, jwtToken.ValidTo.ToString("yyyy-MM-dd HH:mm:ss"));
                     else return new LoginResponse();
                 }
             }
@@ -257,11 +290,15 @@ namespace Infrastructure.Repos
             if (token is null) return new LoginResponse();
 
             var user = await userManager.FindByIdAsync(token.UserId);
-            string newToken = await GenerateToken(user);
+            var newjwtToken = await GenerateToken(user);
+            string newToken=new JwtSecurityTokenHandler().WriteToken(newjwtToken);
             string newRefreshToken = GenerateRefreshToken();
+
             var saveResult = await SaveRefreshTokenAsync(user.Id, newRefreshToken);
             if (saveResult.flag)
-                return new LoginResponse(true, $"{user.Name} successfully re-logged in.", newToken, newRefreshToken);
+                return new LoginResponse(true
+                    , $"{user.Name} successfully re-logged in."
+                    , newToken, newRefreshToken,newjwtToken.ValidTo.ToString("yyyy-MM-dd HH:mm:ss"));
             else
                 return new LoginResponse();
         }

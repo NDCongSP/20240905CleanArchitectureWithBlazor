@@ -13,7 +13,7 @@ using RestEase;
 
 namespace API.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductsController : BaseController<Guid, Product>, IProduct

@@ -30,7 +30,7 @@ namespace Application.Extentions
         {
             public const string BasePath = "api/Account";
             public const string Login = "identity/Login";
-            public const string Create = "identity/create";
+            public const string CreateAccount = "identity/create";
             public const string RefreshToken = "identity/refresh-token";
             public const string RoleCreate = "identity/role/create";
             public const string RoleList = "identity/role/list";
@@ -46,6 +46,11 @@ namespace Application.Extentions
         {
             public const string BasePath = "api/Products";
             public const string GetFillter = "GetFillter";
+        }
+
+        public static class Unit
+        {
+            public const string BasePath = "api/units";
         }
     }
 }

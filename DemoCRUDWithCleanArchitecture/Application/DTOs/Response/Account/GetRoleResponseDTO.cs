@@ -6,5 +6,9 @@ using System.Threading.Tasks;
 
 namespace Application.DTOs.Response.Account
 {
-    public record GetRoleDTO(string id, string name);
+    public class GetRoleResponseDTO
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
+    }
 }

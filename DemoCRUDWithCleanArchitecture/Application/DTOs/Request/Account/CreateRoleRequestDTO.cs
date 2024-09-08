@@ -1,6 +1,6 @@
 ﻿namespace Application.DTOs.Request.Account
 {
-    public class CreateRoleDTO
+    public class CreateRoleRequestDTO
     {
         public string? Name { get; set; } = string.Empty;
     }

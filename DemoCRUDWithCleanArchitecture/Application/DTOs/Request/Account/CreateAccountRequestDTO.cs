@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.DTOs.Request.Account
 {
-    public class CreateAccountDTO : LoginDTO
+    public class CreateAccountRequestDTO : LoginRequestDTO
     {
         [Required]
         public string Name { get; set; }=string.Empty;

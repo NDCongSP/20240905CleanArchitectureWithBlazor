@@ -22,7 +22,7 @@ namespace WebUI.Pages
 
         protected async override Task OnInitializedAsync()
         {
-            var result = await _product.GetAll();
+            var result = await _product.GetAllAsync();
 
             if (!result.Succeeded)
             {

@@ -4,7 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.DTOs.Request.Account
+namespace Application.Models
 {
-    public record AssignUserRoleDTO(string userEmail, string roleName);
+    public class Fillter
+    {
+        public string CategoryName { get; set; }
+    }
 }

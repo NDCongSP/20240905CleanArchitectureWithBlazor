@@ -1,5 +1,7 @@
 ﻿@page "/product"
 @using Domain.Entity.Products
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
 
 <RadzenPanel class="rz-p-4 rz-border-radius-2 rz-mx-4">
     <RadzenDataGrid @ref="_profileGrid" AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" AllowPaging="true" PageSize="10" AllowSorting="true"

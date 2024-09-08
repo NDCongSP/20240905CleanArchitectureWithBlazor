@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Application.DTOs.Request.Account
 {
-    public class LoginDTO
+    public class LoginRequestDTO
     {
         // [EmailAddress,Required,DataType(DataType.EmailAddress)]
         // [RegularExpression("[^@ \\t\\r\\n]+@[^@ \\t\\r\\n]+\\.[^@ \\t\\r\\n]+",
@@ -11,7 +11,7 @@ namespace Application.DTOs.Request.Account
         //[DisplayName("Email Address")] public string EmailAddress { get; set; } = string.Empty;
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "User Name is required")]
-        public string? Username { get; set; }
+        public string? UserName { get; set; }
 
         [Required,DataType(DataType.Password)]
         [RegularExpression("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*_]).{8,}$",

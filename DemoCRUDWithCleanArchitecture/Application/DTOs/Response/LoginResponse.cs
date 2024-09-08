@@ -1,4 +1,11 @@
 ﻿namespace Application.DTOs.Response
 {
-    public record LoginResponse(bool flag = false, string message = null!, string token = null!, string refreshToken = null!, string expiration = null!);
+    public class LoginResponse
+    {
+        public bool Flag { get; set; } = false;
+        public string Message { get; set; } = null;
+        public string Token { get; set; } = null;
+        public string RefreshToken { get; set; } = null;
+        public string Expiration { get; set; } = null;
+    }
 }

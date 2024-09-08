@@ -1,4 +1,4 @@
-﻿using Application.Services.Contracts;
+﻿using Application.Services.Authen;
 using Domain.Entity.Authentication;
 using Infrastructure.Data;
 using Infrastructure.Repos;
@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,7 @@ namespace Infrastructure.IoC.DependencyInjection
             {
                 option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                option.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(option =>
             {
                 option.TokenValidationParameters = new TokenValidationParameters
@@ -67,7 +69,6 @@ namespace Infrastructure.IoC.DependencyInjection
                     );
             });
 
-            //services.AddScoped<IAccount, AccountRepository>();
             ServiceAddScoped.RegisterServices(services);
 
 

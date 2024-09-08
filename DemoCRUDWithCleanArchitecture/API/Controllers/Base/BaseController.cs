@@ -20,27 +20,27 @@ namespace API.Controllers.Base
         }
 
         [HttpGet]
-        public Task<Result<List<T>>> GetAll()
+        public async Task<Result<List<T>>> GetAllAsync()
         {
-            return _repository.GetAll();
+            return await _repository.GetAllAsync();
         }
 
         [HttpGet(ApiRoutes.GetById)]
-        public Task<Result<T>> GetById([Path] TId id)
+        public async Task<Result<T>> GetByIdAsync([Path] TId id)
         {
-            return _repository.GetById(id);
+            return await _repository.GetByIdAsync(id);
         }
 
         [HttpPost(ApiRoutes.Insert)]
-        public Task<Result<T>> Insert([Body] T model)
+        public async Task<Result<T>> InsertAsync([Body] T model)
         {
-            return _repository.Insert(model);
+            return await _repository.InsertAsync(model);
         }
 
         [HttpPost(ApiRoutes.Update)]
-        public Task<Result<T>> Update([Body] T model)
+        public async Task<Result<T>> UpdateAsync([Body] T model)
         {
-            return _repository.Update(model);
+            return await _repository.UpdateAsync(model);
         }
     }
 }

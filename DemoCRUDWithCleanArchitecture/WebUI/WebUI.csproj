@@ -11,20 +11,25 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\logoTeaLife.svg" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="Resources\logoTeaLife.svg" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <None Include="Layout\NavMenu.razor.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="8.0.8" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.8" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.8" PrivateAssets="all" />
-
-		<PackageReference Include="NetcodeHub.Packages.Components.DataGrid" Version="1.0.1" />
-		<PackageReference Include="NetcodeHub.Packages.Components.Modal" Version="1.0.1" />
-		<PackageReference Include="NetcodeHub.Packages.Components.Toast" Version="1.0.5" />
-		<PackageReference Include="NetcodeHub.Packages.Components.Validations" Version="1.0.1" />
 		<PackageReference Include="Mapster" Version="7.4.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-		<PackageReference Include="Radzen.Blazor" Version="5.1.8" />
+		<PackageReference Include="Radzen.Blazor" Version="5.1.9" />
 		<PackageReference Include="RestEase" Version="1.6.4" />
 		<PackageReference Include="RestEase.HttpClientFactory" Version="1.6.4" />
 	</ItemGroup>

@@ -1,5 +1,5 @@
-﻿using Application.DTOs.Request;
-using Application.Extentions;
+﻿using Application.Extentions;
+using Application.Models;
 using Application.Services;
 using Domain.Entity.Products;
 using Infrastructure.Data;
@@ -9,9 +9,9 @@ using RestEase;
 
 namespace Infrastructure.Repos
 {
-    public class ProductRepository(ApplicationDbContext dbContext, IHttpContextAccessor httpContextAccessor) : IProduct
+    public class RepositoryProductServices(ApplicationDbContext dbContext, IHttpContextAccessor httpContextAccessor) : IProduct
     {
-        public async Task<Result<List<Product>>> GetAll()
+        public async Task<Result<List<Product>>> GetAllAsync()
         {
             try
             {
@@ -23,7 +23,7 @@ namespace Infrastructure.Repos
             }
         }
 
-        public async Task<Result<Product>> GetById([Path] Guid id)
+        public async Task<Result<Product>> GetByIdAsync([Path] Guid id)
         {
             try
             {
@@ -36,7 +36,7 @@ namespace Infrastructure.Repos
             }
         }
 
-        public async Task<Result<List<Product>>> GetFilter([Body] Fillter model)
+        public async Task<Result<List<Product>>> GetFilterAsync([Body] Fillter model)
         {
             try
             {
@@ -50,7 +50,7 @@ namespace Infrastructure.Repos
             }
         }
 
-        public async Task<Result<Product>> Insert([Body] Product model)
+        public async Task<Result<Product>> InsertAsync([Body] Product model)
         {
             try
             {
@@ -64,7 +64,7 @@ namespace Infrastructure.Repos
             }
         }
 
-        public async Task<Result<Product>> Update([Body] Product model)
+        public async Task<Result<Product>> UpdateAsync([Body] Product model)
         {
             try
             {

@@ -1,5 +1,4 @@
 ﻿using Application.Extentions;
-using Application.Models;
 using Application.Services.Base;
 using Domain.Entity.Products;
 using RestEase;
@@ -11,10 +10,8 @@ using System.Threading.Tasks;
 
 namespace Application.Services
 {
-    [BasePath(ApiRoutes.Product.BasePath)]
-    public interface IProduct : IRepository<Guid, Product>
+    [BasePath(ApiRoutes.Unit.BasePath)]
+    public interface IUnit : IRepository<Guid,Unit>
     {
-        [Get(ApiRoutes.Product.GetFillter)]
-        Task<Result<List<Product>>> GetFilterAsync([Body] Fillter model);
     }
 }

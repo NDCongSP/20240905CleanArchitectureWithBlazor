@@ -10,10 +10,12 @@ namespace Infrastructure.Repos
     public class Repository
     {
         public IProduct SProduct { get; set; }
+        public IUnit SUnit { get; set; }
 
-        public Repository(IProduct sProduct = null)
+        public Repository(IProduct sProduct = null, IUnit sUnit = null)
         {
             SProduct = sProduct;
+            SUnit = sUnit;
         }
     }
 }

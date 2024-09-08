@@ -1,6 +1,8 @@
 ﻿@using System.Net.Http
 @using System.Net.Http.Json
 @using Application.Services
+@using Application.Services.Authen
+@using Application.Services.Authen.UI
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.AspNetCore.Components.Routing
 @using Microsoft.AspNetCore.Components.Web
@@ -22,5 +24,6 @@
 @*redirect*@
 @inject NavigationManager _navigation
 
-
-@inject IProduct _product;
+@* @inject IAuthServices _authenServices *@
+@inject IAccount _authenServices
+@inject IProduct _product

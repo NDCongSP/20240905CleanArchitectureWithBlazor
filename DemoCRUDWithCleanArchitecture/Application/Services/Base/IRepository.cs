@@ -12,15 +12,15 @@ namespace Application.Services.Base
     public interface IRepository<TId, T> where T : class
     {
         [Get(ApiRoutes.GetAll)]
-        Task<Result<List<T>>> GetAll();
+        Task<Result<List<T>>> GetAllAsync();
 
         [Get(ApiRoutes.GetById)]
-        Task<Result<T>> GetById([Path] TId id);
+        Task<Result<T>> GetByIdAsync([Path] TId id);
 
         [Post(ApiRoutes.Insert)]
-        Task<Result<T>> Insert([Body] T model);
+        Task<Result<T>> InsertAsync([Body] T model);
 
         [Post(ApiRoutes.Update)]
-        Task<Result<T>> Update([Body] T model);
+        Task<Result<T>> UpdateAsync([Body] T model);
     }
 }

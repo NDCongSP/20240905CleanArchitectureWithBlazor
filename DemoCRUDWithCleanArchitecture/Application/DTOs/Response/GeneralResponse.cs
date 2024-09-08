@@ -1,4 +1,14 @@
-﻿namespace Application.DTOs.Response
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Application.DTOs.Response
 {
-    public record GeneralResponse(bool flag = false, string message = null!);
+    public class GeneralResponse
+    {
+        public bool Flag { get; set; }=false;
+        public string Message { get; set; } = null;
+    }
 }

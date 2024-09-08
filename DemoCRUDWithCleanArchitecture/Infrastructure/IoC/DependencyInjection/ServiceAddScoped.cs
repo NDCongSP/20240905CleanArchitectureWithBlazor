@@ -1,5 +1,5 @@
 ﻿using Application.Services;
-using Application.Services.Contracts;
+using Application.Services.Authen;
 using Infrastructure.Repos;
 using Microsoft.Extensions.DependencyInjection;
 namespace Infrastructure.IoC.DependencyInjection
@@ -8,8 +8,9 @@ namespace Infrastructure.IoC.DependencyInjection
     {
         public static void RegisterServices(IServiceCollection services)
         {
-            services.AddScoped<IAccount, AccountRepository>();
-            services.AddScoped<IProduct, ProductRepository>();
+            services.AddScoped<IAccount, RepositoryAccountServices>();
+            services.AddScoped<IProduct, RepositoryProductServices>();
+            services.AddScoped<IUnit, RepositoryUnitServices>();
 
             services.AddScoped<Repository>();
         }

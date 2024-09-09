@@ -116,8 +116,8 @@ namespace Infrastructure.Repos
                 };
 
             var token = new JwtSecurityToken(
-                issuer: config["JWT:ValidIssuer"],
-                audience: config["JWT:ValidAudience"],
+                issuer: config["JWT:Issuer"],
+                audience: config["JWT:Audience"],
                 expires: expiry,
                 claims: userClaims,
                 signingCredentials: credentials

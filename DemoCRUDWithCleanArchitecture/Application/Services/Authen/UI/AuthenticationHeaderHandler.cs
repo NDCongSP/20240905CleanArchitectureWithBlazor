@@ -18,25 +18,34 @@ namespace Application.Services.Authen.UI
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            // skip token endpoints
-            if (request.RequestUri?.AbsolutePath.Contains("/login") is not true)
+            try
             {
-                var accessTokenResult = await _tokenProviderAccessor.TokenProvider.RequestAccessToken();
-                if (accessTokenResult.Status == AccessTokenResultStatus.RequiresRedirect)
+                var isLogin = request.RequestUri?.AbsolutePath.Contains("/login") ?? false;
+
+                // skip token endpoints
+                if (!isLogin)
                 {
-                    _navigation.NavigateTo(accessTokenResult.RedirectUrl);
-                }
-                else if (accessTokenResult.Status == AccessTokenResultStatus.Success)
-                {
-                    if (accessTokenResult.TryGetToken(out AccessToken accessToken) && !string.IsNullOrWhiteSpace(accessToken.Value))
+                    var accessTokenResult = await _tokenProviderAccessor.TokenProvider.RequestAccessToken();
+                    if (accessTokenResult.Status == AccessTokenResultStatus.RequiresRedirect)
                     {
-                        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken.Value);
+                        _navigation.NavigateTo(accessTokenResult.RedirectUrl);
                     }
-                    else
+                    else if (accessTokenResult.Status == AccessTokenResultStatus.Success)
                     {
-                        _navigation.NavigateTo("/login");
+                        if (accessTokenResult.TryGetToken(out AccessToken accessToken) && !string.IsNullOrWhiteSpace(accessToken.Value))
+                        {
+                            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken.Value);
+                        }
+                        else
+                        {
+                            _navigation.NavigateTo("/login");
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
             }
             return await base.SendAsync(request, cancellationToken);
         }

@@ -37,8 +37,8 @@ namespace Infrastructure.IoC.DependencyInjection
             {
                 option.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
                     ValidateIssuerSigningKey = true,
                     ValidateLifetime = true,
                     ValidIssuer = config["Jwt:Issuer"],
@@ -65,7 +65,7 @@ namespace Infrastructure.IoC.DependencyInjection
                                 .AllowAnyOrigin()
                                 .AllowAnyMethod()
                                 .AllowAnyHeader()
-                                .WithExposedHeaders("Content-Disposition")
+                                // .WithExposedHeaders("Content-Disposition")
                     );
             });
 

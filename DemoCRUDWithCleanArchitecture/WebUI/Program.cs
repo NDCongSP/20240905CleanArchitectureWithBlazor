@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication.Internal;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
 using Application.Services.Authen;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -25,10 +26,10 @@ builder.Services.AddRadzenComponents();
 builder.Services.AddBlazoredLocalStorage();
 
 builder.Services.AddScoped<AuthenticationStateProvider, ApiAuthenticationStateProvider>();
-//builder.Services.AddScoped<IAuthServices, AuthServices>();
-builder.Services.AddScoped<IAccount, AuthServices>();
-builder.Services.AddTransient<AuthServices>();
-builder.Services.AddTransient<ApiAuthenticationStateProvider>();
+builder.Services.AddScoped<IAuthServices, AuthServices>();
+
+// builder.Services.AddTransient<AuthServices>();
+// builder.Services.AddTransient<ApiAuthenticationStateProvider>();
 
 builder.Services.AddScoped<AuthenticationStateProvider, ApiAuthenticationStateProvider>()
     .AddScoped(sp => (ApiAuthenticationStateProvider)sp.GetRequiredService<AuthenticationStateProvider>())
@@ -45,15 +46,25 @@ builder.Services.AddAuthorizationCore(b =>
         p.RequireRole("Admin");
         p.RequireClaim("ABC", "1");
     });
-
 });
+
+builder.Services.AddCascadingAuthenticationState();
 
 //Register client and services use RestEase library
 // Register the RestEase client
 builder.Services.AddHttpClient("API")
-    .ConfigureHttpClient(x => x.BaseAddress = new Uri("https://localhost:7031"))
+    .ConfigureHttpClient(x => x.BaseAddress = new Uri(config["AppSettings:ApiBaseUrl"]!))
+    //.AddHttpMessageHandler(sp =>
+    //{
+    //    var handler = sp.GetRequiredService<AuthorizationMessageHandler>();
+    //    handler.ConfigureHandler(["/login"]);
+    //    return handler;
+    //})
+    .AddHttpMessageHandler<AuthenticationHeaderHandler>()
     .UseWithRestEaseClient<IProduct>()
     .UseWithRestEaseClient<IUnit>();
+
+builder.Services.AddScoped<HttpClient>(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("API"));
 
 ////add client API
 //builder.Services.AddHttpClient("GiamSatAPI", (sp, client) =>
@@ -65,10 +76,5 @@ builder.Services.AddHttpClient("API")
 //}).AddHttpMessageHandler<AuthenticationHeaderHandler>().Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("GiamSatAPI"));
 //builder.Services.AddHttpClientInterceptor();
 
-
-
-
-
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
 await builder.Build().RunAsync();

@@ -2,11 +2,13 @@
 using Application.DTOs.Response;
 using Application.Extentions;
 using Application.Services.Authen;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
+    [Authorize]
     [Route($"api/[controller]")]
     [ApiController]
     public class AccountController(IAccount account) : ControllerBase
@@ -19,6 +21,7 @@ namespace API.Controllers
             return Ok(await account.CreateAccountAsync(model));
         }
 
+        [AllowAnonymous]
         [HttpPost(ApiRoutes.Identity.Login)]
         public async Task<ActionResult<GeneralResponse>> LoginAccountAsync(LoginRequestDTO model)
         {

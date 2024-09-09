@@ -1,5 +1,6 @@
 ﻿using Application.DTOs.Request.Account;
 using Application.DTOs.Response;
+using Application.DTOs.Response.Account;
 using Application.Extentions;
 using RestEase;
 using System;
@@ -13,8 +14,18 @@ namespace Application.Services.Authen.UI
     [BaseAddress(ApiRoutes.Identity.BasePath)]
     public interface IAuthServices
     {
-        [Post(ApiRoutes.Identity.Login)]
-        Task<LoginResponse> LoginAsync(LoginRequestDTO model);
+        Task CreateAdmin();
+        Task<GeneralResponse> CreateAccountAsync(CreateAccountRequestDTO model);
+        Task<LoginResponse> LoginAccountAsync(LoginRequestDTO model);
+        Task<LoginResponse> RefreshTokenAsync(RefreshTokenRequestDTO model);
+        Task<GeneralResponse> CreateRoleAsysnc(CreateRoleRequestDTO model);
+        Task<IEnumerable<GetRoleResponseDTO>> GetRolesAsync();
+        Task<IEnumerable<GetUserWithRoleResponseDTO>> GetUsersWithRolesAsync();
+        Task<GeneralResponse> ChangeUserRoleAsync(AssignUserRoleRequestDTO model);
+        Task<GeneralResponse> ChangePassAsync(ChangePassRequestDTO model);
+        Task<GeneralResponse> AssignUserRoleAsync(AssignUserRoleRequestDTO model);
+
+        Task<string> TryRefreshToken();
         Task LogoutAsync();
     }
 }

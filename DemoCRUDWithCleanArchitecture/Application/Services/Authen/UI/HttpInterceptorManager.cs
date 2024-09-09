@@ -14,10 +14,10 @@ namespace Application.Services.Authen.UI
         private readonly NotificationService _notify;
         private readonly NavigationManager _navigationManager;
         private readonly HttpClientInterceptor _httpInterceptor;
-        private readonly AuthServices _authService;
+        private readonly IAuthServices _authService;
 
         public HttpInterceptorManager(NotificationService notify, NavigationManager navigationManager
-            , HttpClientInterceptor httpInterceptor, AuthServices authService)
+            , HttpClientInterceptor httpInterceptor, IAuthServices authService)
         {
             _notify = notify;
             _navigationManager = navigationManager;

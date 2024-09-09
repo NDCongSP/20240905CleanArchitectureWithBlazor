@@ -28,8 +28,8 @@ namespace Application.Extentions
 
         public static class Identity
         {
-            public const string BasePath = "api/Account";
-            public const string Login = "identity/Login";
+            public const string BasePath = "api/account";
+            public const string Login = "identity/login";
             public const string CreateAccount = "identity/create";
             public const string RefreshToken = "identity/refresh-token";
             public const string RoleCreate = "identity/role/create";

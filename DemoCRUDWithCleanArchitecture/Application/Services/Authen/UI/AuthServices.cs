@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
@@ -16,7 +17,7 @@ using static Application.Extentions.ConstantExtention;
 
 namespace Application.Services.Authen.UI
 {
-    public class AuthServices : IAccount
+    public class AuthServices : IAuthServices
     {
         readonly HttpClient _httpClient;
         readonly ILocalStorageService _localStorage;
